@@ -44,8 +44,10 @@ void ComplexPlane::setMouseLocation(Vector2f coord)
 // Loads the information text (center, cursor, instructions) to the screen
 void ComplexPlane::loadText(Text& text)
 {
-	text.setString("Mandelbrot Set\nCenter: (");
-	// need to add more work
+	stringstream ss;
+	ss << "(" << (m_view.getCenter()).x << "," << (m_view.getCenter()).y << ")";
+	ss << "(" << m_mouseLocation.x << "," << m_mouseLocation.y << ")";
+	text.setString("Mandelbrot Set\nCenter: (ss.str())\nCursor: (ss.str())\nLeft-click to zoom in\nRight-click to zoom out");
 }
 
 // Counting the # of iterations of the Mandelbrot set for the given coordinate
