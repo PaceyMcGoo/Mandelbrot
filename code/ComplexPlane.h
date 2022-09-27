@@ -19,6 +19,10 @@ class ComplexPlane
 		View m_view;
 		int m_zoomCount = 0;
 		float m_aspectRatio;
+		const unsigned int MAX_ITER = 64;
+		const float BASE_WIDTH = 4.0;
+		const float BASE_HEIGHT = 4.0;
+		const float BASE_ZOOM = 0.05;
 
 	public:
 		ComplexPlane(float aspectRatio);
@@ -26,7 +30,7 @@ class ComplexPlane
 		void zoomOut();
 		void setCenter(Vector2f coord);
 		View getView();
-		void setMouseLocation(Vector2f coord) { m_mouseLocation = coord; };
+		void setMouseLocation(Vector2f coord);
 		void loadText(Text& text);
 		size_t countInterations(Vector2f coord);
 		void interationsToRGB(size_t count, Uint8& r, Uint8& g, Uint8& b);

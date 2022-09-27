@@ -52,6 +52,9 @@ int main()
 	//Vectors
 	Vector2f mousePos;
 
+	enum State {CALCULATING,DISPLAYING};
+
+	State current_State = CALCULATING;
 
 	while (window.isOpen())
 	{
@@ -69,11 +72,13 @@ int main()
 				{	
 
 					ComplexPlane.zoomIn();
+					current_State = CALCULATING;
 
 				}
 				else if (event.mouseButton.button == sf::Mouse::Right)
 				{
 					ComplexPlane.zoomOut();
+					current_State = CALCULATING;
 				}
 			}
 			if (event.type == sf::Event::MouseMoved)
@@ -96,7 +101,7 @@ int main()
 		// Clear everything from the last frame
 		window.clear();
 
-			window.draw(messageText);
+		window.draw(messageText);
 
 
 		// Show everything we just drew
