@@ -84,23 +84,25 @@ int main()
 			{
 				if(event.mouseButton.button == sf::Mouse::Left)
 				{	
-
-					ComplexPlane.zoomIn();
 					ComplexPlane.setCenter(mousePos);
+					ComplexPlane.zoomIn();
+					//ComplexPlane.setCenter(mousePos);
 					current_State = CALCULATING;
 
 				}
 				else if (event.mouseButton.button == sf::Mouse::Right)
 				{
-					ComplexPlane.zoomOut();
 					ComplexPlane.setCenter(mousePos);
+					ComplexPlane.zoomOut();
+					//ComplexPlane.setCenter(mousePos);
 					current_State = CALCULATING;
 				}
 			}
 			if (event.type == sf::Event::MouseMoved)
 			{
-				mousePos.x = sf::Mouse::getPosition(window).x;
-				mousePos.y = sf::Mouse::getPosition(window).y;
+				/*mousePos.x = sf::Mouse::getPosition(window).x;
+				mousePos.y = sf::Mouse::getPosition(window).y;*/
+				mousePos = window.mapPixelToCoords(Mouse::getPosition(), ComplexPlane.getView());
 
 				ComplexPlane.setMouseLocation(mousePos);
 			}

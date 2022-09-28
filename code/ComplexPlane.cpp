@@ -22,6 +22,7 @@ void ComplexPlane::zoomIn()
 	m_zoomCount++;
 	double x = BASE_WIDTH * (pow(BASE_ZOOM, m_zoomCount));
 	double y = BASE_HEIGHT * m_aspectRatio * (pow(BASE_ZOOM, m_zoomCount));
+	//m_view.zoom(-.5f);
 	m_view.setSize(x, y);
 
 	//used for debugging
@@ -33,7 +34,7 @@ void ComplexPlane::zoomOut()
 	m_zoomCount = m_zoomCount - 1;
 	double x = BASE_WIDTH * (pow(BASE_ZOOM, m_zoomCount));
 	double y = BASE_HEIGHT * m_aspectRatio * (pow(BASE_ZOOM, m_zoomCount));
-	m_view.zoom(.5f);
+	//m_view.zoom(-.5f);
 	m_view.setSize(x, y);
 	
 
