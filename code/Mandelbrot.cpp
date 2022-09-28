@@ -12,6 +12,7 @@ using namespace std;
 #include "ComplexPlane.h"
 
 void Adds_Points(vector<Vector2f>&, vector<Vector2f>&);
+void calculate(ComplexPlane& ComplexPlane, VertexArray &vertex_Array);
 
 int main()
 {
@@ -21,10 +22,11 @@ int main()
 	// Create and open a window for the game
 	RenderWindow window(vm, "Mandelbrot", Style::Fullscreen);
 
-	ComplexPlane ComplexPlane(VideoMode::getDesktopMode().height / VideoMode::getDesktopMode().width);
+	float aspectRatio = (VideoMode::getDesktopMode().width * 1.0f) / (VideoMode::getDesktopMode().height * 1.0f);
 
 
-
+	ComplexPlane ComplexPlane(aspectRatio);
+	
 	// Text
 	Text messageText;
 	// Font
@@ -34,13 +36,11 @@ int main()
 	messageText.setFont(font);
 
 
-	// Assign the actual message
-	messageText.setString("");
+	// Assign the size of the text
 	messageText.setCharacterSize(25);
 
 	//Choose a color
 	messageText.setFillColor(Color::White);
-
 
 	// Position the text
 	FloatRect textRect = messageText.getLocalBounds();
@@ -51,6 +51,11 @@ int main()
 	//Vectors
 	Vector2f mousePos;
 
+	//Vertex Array
+	VertexArray vertex_Array(Points, VideoMode::getDesktopMode().height * VideoMode::getDesktopMode().width);
+;
+
+	//State of the loop
 	enum State {CALCULATING,DISPLAYING};
 
 	State current_State = CALCULATING;
@@ -71,12 +76,14 @@ int main()
 				{	
 
 					ComplexPlane.zoomIn();
+					ComplexPlane.setCenter(mousePos);
 					current_State = CALCULATING;
 
 				}
 				else if (event.mouseButton.button == sf::Mouse::Right)
 				{
 					ComplexPlane.zoomOut();
+					ComplexPlane.setCenter(mousePos);
 					current_State = CALCULATING;
 				}
 			}
@@ -88,6 +95,10 @@ int main()
 				ComplexPlane.setMouseLocation(mousePos);
 			}
 			
+		}
+		if (current_State == CALCULATING)
+		{
+			calculate(ComplexPlane,vertex_Array);
 		}
 
 		//close the game
@@ -101,8 +112,6 @@ int main()
 		window.clear();
 		ComplexPlane.loadText(messageText);
 		window.draw(messageText);
-
-
 		// Show everything we just drew
 		window.display();
 
@@ -110,6 +119,11 @@ int main()
 	}
 
 	return 0;
+}
+
+void calculate(ComplexPlane& ComplexPlane, VertexArray& vertex_Array)
+{
+
 }
 
 

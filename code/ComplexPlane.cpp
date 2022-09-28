@@ -20,7 +20,7 @@ void ComplexPlane::zoomIn()
 {
 	m_zoomCount++;
 	double x = BASE_WIDTH * (pow(BASE_ZOOM, m_zoomCount));
-	double y = BASE_HEIGHT * (pow(BASE_ZOOM, m_zoomCount));
+	double y = BASE_HEIGHT * m_aspectRatio * (pow(BASE_ZOOM, m_zoomCount));
 	m_view.setSize(x, y);
 }
 
@@ -28,7 +28,7 @@ void ComplexPlane::zoomOut()
 {
 	m_zoomCount = m_zoomCount - 1;
 	double x = BASE_WIDTH * (pow(BASE_ZOOM, m_zoomCount));
-	double y = BASE_HEIGHT * (pow(BASE_ZOOM, m_zoomCount));
+	double y = BASE_HEIGHT * m_aspectRatio * (pow(BASE_ZOOM, m_zoomCount));
 	m_view.setSize(x, y);
 }
 
@@ -51,11 +51,11 @@ void ComplexPlane::loadText(Text& text)
 	/*ss << "(" << (m_view.getCenter()).x << "," << (m_view.getCenter()).y << ")";
 	ss << "(" << m_mouseLocation.x << "," << m_mouseLocation.y << ")";
 	text.setString("Mandelbrot Set\nCenter: (ss.str())\nCursor: (ss.str())\nLeft-click to zoom in\nRight-click to zoom out");*/
+
     stringstream ss;    
     ss << "Mandelbrot\n" << "Center: (" << m_view.getCenter().x << ", " << m_view.getCenter().y << ")\nCursor: " << m_mouseLocation.x << 
         ", " << m_mouseLocation.y << ")\nLeft - click to zoom in\nRight - click to zoom out";
     text.setString(ss.str());
-
 
 }
 
