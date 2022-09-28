@@ -1,8 +1,11 @@
-#include "ComplexPlane.h"
+
 #include <SFML\Graphics.hpp>
+#include <sstream>
 
 using namespace sf;
 using namespace std;
+
+#include "ComplexPlane.h"
 
 ComplexPlane::ComplexPlane(float aspectRatio)
 {
@@ -44,10 +47,15 @@ void ComplexPlane::setMouseLocation(Vector2f coord)
 // Loads the information text (center, cursor, instructions) to the screen
 void ComplexPlane::loadText(Text& text)
 {
-	stringstream ss;
-	ss << "(" << (m_view.getCenter()).x << "," << (m_view.getCenter()).y << ")";
+	/*ss << "(" << (m_view.getCenter()).x << "," << (m_view.getCenter()).y << ")";
 	ss << "(" << m_mouseLocation.x << "," << m_mouseLocation.y << ")";
-	text.setString("Mandelbrot Set\nCenter: (ss.str())\nCursor: (ss.str())\nLeft-click to zoom in\nRight-click to zoom out");
+	text.setString("Mandelbrot Set\nCenter: (ss.str())\nCursor: (ss.str())\nLeft-click to zoom in\nRight-click to zoom out");*/
+    stringstream ss;    
+    ss << "Mandelbrot\n" << "Center: (" << m_view.getCenter().x << ", " << m_view.getCenter().y << ")\nCursor: " << m_mouseLocation.x << 
+        ", " << m_mouseLocation.y << ")\nLeft - click to zoom in\nRight - click to zoom out";
+    text.setString(ss.str());
+
+
 }
 
 // Counting the # of iterations of the Mandelbrot set for the given coordinate
@@ -55,4 +63,10 @@ size_t ComplexPlane::countIterations(Vector2f coord)
 {
 	int iterations = 0;
 	// need to add more work
+	return 22;
+}
+
+View ComplexPlane::getView()
+{
+	return m_view;
 }

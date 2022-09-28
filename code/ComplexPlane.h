@@ -1,9 +1,6 @@
 #pragma once
 
 #include <SFML\Graphics.hpp>
-#include "ComplexPlane.cpp"
-
-
 using namespace sf;
 using namespace std;
 

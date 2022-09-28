@@ -6,11 +6,10 @@
 #include <cstdlib>
 #include <ctime>
 #include <complex>
-#include "ComplexPlane.h"
-
 
 using namespace sf;
 using namespace std;
+#include "ComplexPlane.h"
 
 void Adds_Points(vector<Vector2f>&, vector<Vector2f>&);
 
@@ -36,8 +35,8 @@ int main()
 
 
 	// Assign the actual message
-	messageText.setString("Nothing");
-	messageText.setCharacterSize(50);
+	messageText.setString("");
+	messageText.setCharacterSize(25);
 
 	//Choose a color
 	messageText.setFillColor(Color::White);
@@ -47,7 +46,7 @@ int main()
 	FloatRect textRect = messageText.getLocalBounds();
 	messageText.setOrigin(textRect.left +
 		textRect.width / 2.0f,textRect.top + textRect.height / 2.0f);
-	messageText.setPosition(1920 / 2.0f, 100 / 2.0f);
+	messageText.setPosition(0,0);
 
 	//Vectors
 	Vector2f mousePos;
@@ -100,7 +99,7 @@ int main()
 
 		// Clear everything from the last frame
 		window.clear();
-
+		ComplexPlane.loadText(messageText);
 		window.draw(messageText);
 
 
