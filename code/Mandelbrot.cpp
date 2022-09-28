@@ -22,10 +22,20 @@ int main()
 	// Create and open a window for the game
 	RenderWindow window(vm, "Mandelbrot", Style::Fullscreen);
 
+	//Calculates Aspect Ratio
 	float aspectRatio = (VideoMode::getDesktopMode().width * 1.0f) / (VideoMode::getDesktopMode().height * 1.0f);
 
-
+	//Initializes the ComplexPlane Object
 	ComplexPlane ComplexPlane(aspectRatio);
+
+	//view for hud
+	View hudView(sf::FloatRect(0, 0, 1920, 1080));
+
+	/*used for debugging*/
+	RectangleShape rect;
+	rect.setSize(Vector2f(800,800));
+	rect.setFillColor(Color::White);
+	
 	
 	// Text
 	Text messageText;
@@ -108,13 +118,22 @@ int main()
 		}
 
 
+
 		// Clear everything from the last frame
 		window.clear();
 		ComplexPlane.loadText(messageText);
+
+		window.setView(hudView);
 		window.draw(messageText);
+
+		window.setView(ComplexPlane.getView());
+
+		//used for debugging
+		window.draw(rect);
+		
+
 		// Show everything we just drew
 		window.display();
-
 
 	}
 

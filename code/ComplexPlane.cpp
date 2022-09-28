@@ -1,6 +1,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <sstream>
+#include <iostream>
 
 using namespace sf;
 using namespace std;
@@ -22,6 +23,9 @@ void ComplexPlane::zoomIn()
 	double x = BASE_WIDTH * (pow(BASE_ZOOM, m_zoomCount));
 	double y = BASE_HEIGHT * m_aspectRatio * (pow(BASE_ZOOM, m_zoomCount));
 	m_view.setSize(x, y);
+
+	//used for debugging
+	cout << m_zoomCount << endl;
 }
 
 void ComplexPlane::zoomOut()
@@ -29,14 +33,18 @@ void ComplexPlane::zoomOut()
 	m_zoomCount = m_zoomCount - 1;
 	double x = BASE_WIDTH * (pow(BASE_ZOOM, m_zoomCount));
 	double y = BASE_HEIGHT * m_aspectRatio * (pow(BASE_ZOOM, m_zoomCount));
+	m_view.zoom(.5f);
 	m_view.setSize(x, y);
+	
+
+	//used for debugging
+	cout << m_zoomCount << endl;
 }
 
 // The center coordinate of the view is set by the given coordinate
 void ComplexPlane::setCenter(Vector2f coord)
 {
 	m_view.setCenter(Vector2f(coord));
-	m_view.setSize(Vector2f(1980.f, 1080.f));
 }
 
 // Update the mouse cursor position with the given coordinate value
