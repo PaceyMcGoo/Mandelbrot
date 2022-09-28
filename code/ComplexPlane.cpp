@@ -6,6 +6,7 @@ using namespace sf;
 using namespace std;
 
 #include "ComplexPlane.h"
+#include <math.h>
 
 ComplexPlane::ComplexPlane(float aspectRatio)
 {
