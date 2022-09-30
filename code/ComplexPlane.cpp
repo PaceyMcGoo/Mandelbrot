@@ -77,13 +77,36 @@ size_t ComplexPlane::countIterations(Vector2f coord)
 	{
 		// create a loop that counts the # of iterations??
 	}
-	return 22;
+	return 33;
 }
 
 // 
 void ComplexPlane::iterationsToRGB(size_t count, Uint8& r, Uint8& g, Uint8& b)
 {
-	// I don't get how to do this one for now lol
+	if (count >= 0 && count <= 16)
+	{
+		r = 0;
+		g = 255;
+		b = 0;
+	}
+	else if (count > 16 && count <= 32)
+	{
+		r = 255;
+		g = 255;
+		b = 0;
+	}
+	else if (count > 32 && count < 64)
+	{
+		r = 0;
+		g = 0;
+		b = 255;
+	}
+	else if (count == 64)
+	{
+		r = 0;
+		g = 0;
+		b = 0;
+	}
 }
 
 View ComplexPlane::getView()

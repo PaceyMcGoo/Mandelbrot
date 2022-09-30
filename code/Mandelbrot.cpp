@@ -146,6 +146,7 @@ int main()
 					ComplexPlane.iterationsToRGB(iterationCount, R, G, B);
 					// set color variable in vertex_Array as screen coordinate j, i
 					vertex_Array[j + i * VideoMode::getDesktopMode().width].color = { R, G, B };
+					
 
 
 
@@ -167,12 +168,13 @@ int main()
 		// Clear everything from the last frame
 		window.clear();
 
-		window.draw(rect);
+		//window.draw(rect);
 		window.setView(hudView);
 
 		window.draw(messageText);
 
 		window.setView(ComplexPlane.getView());
+		window.draw(vertex_Array);
 
 		
 
