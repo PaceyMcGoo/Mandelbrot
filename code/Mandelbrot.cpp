@@ -35,7 +35,7 @@ int main()
 	/*used for debugging*/
 	RectangleShape rect;
 	rect.setSize(Vector2f(800, 800));
-	rect.setFillColor(Color::White);
+	rect.setFillColor(Color::Red);
 
 
 	// Text
@@ -130,7 +130,7 @@ int main()
 
 		if (current_State == CALCULATING)
 		{
-			// Calculation
+			 //Calculation
 			for (int i = 0; i < VideoMode::getDesktopMode().height; i++) // i is for height
 			{
 				for (int j = 0; j < VideoMode::getDesktopMode().width; j++) // j is for width
@@ -154,8 +154,9 @@ int main()
 			}
 			current_State = DISPLAYING;
 
-			ComplexPlane.loadText(messageText);
+			
 		}
+		ComplexPlane.loadText(messageText);
 
 		/*
 		##############################
@@ -166,14 +167,14 @@ int main()
 		// Clear everything from the last frame
 		window.clear();
 
+		window.draw(rect);
 		window.setView(hudView);
 
 		window.draw(messageText);
 
 		window.setView(ComplexPlane.getView());
 
-		//used for debugging
-		window.draw(rect);
+		
 
 
 		// Show everything we just drew
