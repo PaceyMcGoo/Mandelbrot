@@ -4,11 +4,11 @@
 using namespace sf;
 using namespace std;
 
-// global constants
+// Global Variables
 const unsigned int MAX_ITER = 64;
 const float BASE_WIDTH = 4.0;
 const float BASE_HEIGHT = 4.0;
-const float BASE_ZOOM = 0.5;
+const float BASE_ZOOM = 0.05;
 
 class ComplexPlane
 {
@@ -17,10 +17,7 @@ class ComplexPlane
 		View m_view;
 		int m_zoomCount = 0;
 		float m_aspectRatio;
-		const unsigned int MAX_ITER = 64;
-		const float BASE_WIDTH = 4.0;
-		const float BASE_HEIGHT = 4.0;
-		const float BASE_ZOOM = 0.05;
+		
 
 	public:
 		ComplexPlane(float aspectRatio);

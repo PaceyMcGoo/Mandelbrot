@@ -62,7 +62,7 @@ void ComplexPlane::loadText(Text& text)
 	text.setString("Mandelbrot Set\nCenter: (ss.str())\nCursor: (ss.str())\nLeft-click to zoom in\nRight-click to zoom out");*/
 
     stringstream ss;    
-    ss << "Mandelbrot\n" << "Center: (" << m_view.getCenter().x << ", " << m_view.getCenter().y << ")\nCursor: " << m_mouseLocation.x << 
+    ss << "Mandelbrot\n" << "Center: (" << m_view.getCenter().x << ", " << m_view.getCenter().y << ")\nCursor: (" << m_mouseLocation.x << 
         ", " << m_mouseLocation.y << ")\nLeft - click to zoom in\nRight - click to zoom out";
     text.setString(ss.str());
 
@@ -71,9 +71,19 @@ void ComplexPlane::loadText(Text& text)
 // Counting the # of iterations of the Mandelbrot set for the given coordinate
 size_t ComplexPlane::countIterations(Vector2f coord)
 {
-	int iterations = 0;
-	// need to add more work
+	size_t iterations = 0;
+	
+	for (int i = 0; i < MAX_ITER; i++)
+	{
+		// create a loop that counts the # of iterations??
+	}
 	return 22;
+}
+
+// 
+void ComplexPlane::iterationsToRGB(size_t count, Uint8& r, Uint8& g, Uint8& b)
+{
+	// I don't get how to do this one for now lol
 }
 
 View ComplexPlane::getView()

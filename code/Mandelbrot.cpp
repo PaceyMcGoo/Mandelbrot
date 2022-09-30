@@ -11,14 +11,15 @@ using namespace sf;
 using namespace std;
 #include "ComplexPlane.h"
 
+// Function prototype
 void Adds_Points(vector<Vector2f>&, vector<Vector2f>&);
-void calculate(ComplexPlane& ComplexPlane, VertexArray &vertex_Array);
+// void calculate(ComplexPlane& ComplexPlane, VertexArray& vertex_Array);
 
 int main()
 {
 	// Create a video mode object
 	VideoMode vm(1920, 1080);
-	
+
 	// Create and open a window for the game
 	RenderWindow window(vm, "Mandelbrot", Style::Fullscreen);
 
@@ -33,10 +34,10 @@ int main()
 
 	/*used for debugging*/
 	RectangleShape rect;
-	rect.setSize(Vector2f(800,800));
+	rect.setSize(Vector2f(800, 800));
 	rect.setFillColor(Color::White);
-	
-	
+
+
 	// Text
 	Text messageText;
 	// Font
@@ -55,35 +56,41 @@ int main()
 	// Position the text
 	FloatRect textRect = messageText.getLocalBounds();
 	messageText.setOrigin(textRect.left +
-		textRect.width / 2.0f,textRect.top + textRect.height / 2.0f);
-	messageText.setPosition(0,0);
+		textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+	messageText.setPosition(0, 0);
 
 	//Vectors
 	Vector2f mousePos;
 
 	//Vertex Array
 	VertexArray vertex_Array(Points, VideoMode::getDesktopMode().height * VideoMode::getDesktopMode().width);
-;
+	;
 
 	//State of the loop
-	enum State {CALCULATING,DISPLAYING};
+	enum State { CALCULATING, DISPLAYING };
 
 	State current_State = CALCULATING;
 
 	while (window.isOpen())
 	{
+		/*
+		##############################
+		Handle User Input
+		##############################
+		*/
+
 		Event event;
-		while(window.pollEvent(event))
+		while (window.pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed)
 			{
 				window.close();
 			}
 			//mouse input
-			if(event.type == sf::Event::MouseButtonPressed)
+			if (event.type == sf::Event::MouseButtonPressed)
 			{
-				if(event.mouseButton.button == sf::Mouse::Left)
-				{	
+				if (event.mouseButton.button == sf::Mouse::Left)
+				{
 					ComplexPlane.setCenter(mousePos);
 					ComplexPlane.zoomIn();
 					//ComplexPlane.setCenter(mousePos);
@@ -106,11 +113,7 @@ int main()
 
 				ComplexPlane.setMouseLocation(mousePos);
 			}
-			
-		}
-		if (current_State == CALCULATING)
-		{
-			calculate(ComplexPlane,vertex_Array);
+
 		}
 
 		//close the game
@@ -119,20 +122,59 @@ int main()
 			window.close();
 		}
 
+		/*
+		##############################
+		Update the Scene
+		##############################
+		*/
 
+		if (current_State == CALCULATING)
+		{
+			// Calculation
+			for (int i = 0; i < VideoMode::getDesktopMode().height; i++) // i is for height
+			{
+				for (int j = 0; j < VideoMode::getDesktopMode().width; j++) // j is for width
+				{
+					// assign j, i coordinate to vertex_Array position element
+					vertex_Array[j + i * VideoMode::getDesktopMode().width].position = { (float)j, (float)i };
+					// finding coordinate corresponding to pixel location j, i
+					Vector2f pixelLocation = window.mapPixelToCoords(Vector2i(j, i), ComplexPlane.getView());
+					size_t iterationCount = ComplexPlane.countIterations(pixelLocation);
+					// store RGB values for current pixelLocation
+					Uint8 R, G, B;
+					// assign RGB values by reference
+					ComplexPlane.iterationsToRGB(iterationCount, R, G, B);
+					// set color variable in vertex_Array as screen coordinate j, i
+					vertex_Array[j + i * VideoMode::getDesktopMode().width].color = { R, G, B };
+
+
+
+
+				}
+			}
+			current_State = DISPLAYING;
+
+			ComplexPlane.loadText(messageText);
+		}
+
+		/*
+		##############################
+		Draw the Scene
+		##############################
+		*/
 
 		// Clear everything from the last frame
 		window.clear();
-		ComplexPlane.loadText(messageText);
 
 		window.setView(hudView);
+
 		window.draw(messageText);
 
 		window.setView(ComplexPlane.getView());
 
 		//used for debugging
 		window.draw(rect);
-		
+
 
 		// Show everything we just drew
 		window.display();
@@ -140,11 +182,6 @@ int main()
 	}
 
 	return 0;
-}
-
-void calculate(ComplexPlane& ComplexPlane, VertexArray& vertex_Array)
-{
-
 }
 
 
