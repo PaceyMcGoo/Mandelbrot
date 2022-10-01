@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <sstream>
 #include <iostream>
+#include <complex>
 
 using namespace sf;
 using namespace std;
@@ -72,7 +73,7 @@ void ComplexPlane::loadText(Text& text)
 size_t ComplexPlane::countIterations(Vector2f coord)
 {
 	size_t iterationCount = 0;
-	float x = coord.x;
+	/*float x = coord.x;
 	float y = coord.y;
 
 	float newX = x;
@@ -90,7 +91,22 @@ size_t ComplexPlane::countIterations(Vector2f coord)
 
 		iterationCount++;
  	}
+	cout << iterationCount << endl;
+	return iterationCount;*/
+
+
+	complex<double> c = { coord.x,coord.y };
+	complex<double> z = {0,0};
+
+	while (iterationCount < 64 && abs(z) < 2.0)
+	{
+		z = z * z + c;
+		iterationCount++;
+	}
+	//debugging
+	cout <<"iteration Count: " << iterationCount << endl;
 	return iterationCount;
+
 }
 
 // 
@@ -102,19 +118,19 @@ void ComplexPlane::iterationsToRGB(size_t count, Uint8& r, Uint8& g, Uint8& b)
 		g = 255;
 		b = 0;
 	}
-	else if (count > 16 && count <= 32)
+	if (count > 16 && count <= 32)
 	{
 		r = 255;
 		g = 255;
 		b = 0;
 	}
-	else if (count > 32 && count < 64)
+	if (count > 32 && count < 64)
 	{
 		r = 0;
 		g = 0;
 		b = 255;
 	}
-	else if (count == 64) // max iteration
+	if (count == MAX_ITER) // max iteration
 	{
 		r = 0;
 		g = 0;

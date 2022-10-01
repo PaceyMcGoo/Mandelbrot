@@ -24,19 +24,14 @@ int main()
 	RenderWindow window(vm, "Mandelbrot", Style::Fullscreen);
 
 	//Calculates Aspect Ratio
-	float aspectRatio = (VideoMode::getDesktopMode().width * 1.0f) / (VideoMode::getDesktopMode().height * 1.0f);
+	float aspectRatio = (VideoMode::getDesktopMode().height * 1.0f)/(VideoMode::getDesktopMode().width * 1.0f) ;
+	cout << aspectRatio << endl;
 
 	//Initializes the ComplexPlane Object
 	ComplexPlane ComplexPlane(aspectRatio);
 
 	//view for hud
 	View hudView(sf::FloatRect(0, 0, 1920, 1080));
-
-	/*used for debugging*/
-	RectangleShape rect;
-	rect.setSize(Vector2f(800, 800));
-	rect.setFillColor(Color::Red);
-
 
 	// Text
 	Text messageText;
@@ -132,9 +127,9 @@ int main()
 		{
 			//Calculation 
 			//two for-loops to check every pixel accross the screen
-			for (int i = 0; i < VideoMode::getDesktopMode().height; i++) // i is for height
+			for (int i = 0; i < ComplexPlane.getView().getSize().y; i++) // i is for height
 			{
-				for (int j = 0; j < VideoMode::getDesktopMode().width; j++) // j is for width
+				for (int j = 0; j < ComplexPlane.getView().getSize().x; j++) // j is for width
 				{
 					// assign j, i coordinate to vertex_Array position element
 					int pixel = j + i * VideoMode::getDesktopMode().width;
@@ -148,11 +143,9 @@ int main()
 					// assign RGB values by reference
 					ComplexPlane.iterationsToRGB(iterations, R, G, B);
 					// set color variable in vertex_Array as screen coordinate j, i
+					//vertex_Array[pixel] = pixelLocation;
 					vertex_Array[pixel].color = { R, G, B };
-					
-
-
-
+					cout << "Color: " << vertex_Array[j + i * VideoMode::getDesktopMode().width].position.x;
 
 				}
 			}
@@ -171,9 +164,8 @@ int main()
 		// Clear everything from the last frame
 		window.clear();
 
-		//window.draw(rect);
 		window.setView(hudView);
-
+		
 		window.draw(messageText);
 
 		window.setView(ComplexPlane.getView());
