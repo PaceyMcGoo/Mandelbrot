@@ -71,13 +71,26 @@ void ComplexPlane::loadText(Text& text)
 // Counting the # of iterations of the Mandelbrot set for the given coordinate
 size_t ComplexPlane::countIterations(Vector2f coord)
 {
-	size_t iterations = 0;
-	
+	size_t iterationCount = 0;
+	float x = coord.x;
+	float y = coord.y;
+
+	float newX = x;
+	float newY = y;
+
 	for (int i = 0; i < MAX_ITER; i++)
 	{
-		// create a loop that counts the # of iterations??
-	}
-	return 33;
+		// real number component
+		float realNum = x * x - y * y;
+		// imaginary number component, i
+		float iNum = 2 * x * y;
+		// z^2 + c
+		x = realNum + newX;
+		y = iNum + newY;
+
+		iterationCount++;
+ 	}
+	return iterationCount;
 }
 
 // 
@@ -101,7 +114,7 @@ void ComplexPlane::iterationsToRGB(size_t count, Uint8& r, Uint8& g, Uint8& b)
 		g = 0;
 		b = 255;
 	}
-	else if (count == 64)
+	else if (count == 64) // max iteration
 	{
 		r = 0;
 		g = 0;

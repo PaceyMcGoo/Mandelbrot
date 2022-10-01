@@ -130,22 +130,25 @@ int main()
 
 		if (current_State == CALCULATING)
 		{
-			 //Calculation
+			//Calculation 
+			//two for-loops to check every pixel accross the screen
 			for (int i = 0; i < VideoMode::getDesktopMode().height; i++) // i is for height
 			{
 				for (int j = 0; j < VideoMode::getDesktopMode().width; j++) // j is for width
 				{
 					// assign j, i coordinate to vertex_Array position element
-					vertex_Array[j + i * VideoMode::getDesktopMode().width].position = { (float)j, (float)i };
-					// finding coordinate corresponding to pixel location j, i
+					int pixel = j + i * VideoMode::getDesktopMode().width;
+					vertex_Array[pixel].position = { (float)j, (float)i };
+					// mapping coordinate relative to pixel location j, i
 					Vector2f pixelLocation = window.mapPixelToCoords(Vector2i(j, i), ComplexPlane.getView());
-					size_t iterationCount = ComplexPlane.countIterations(pixelLocation);
+					// counter how many times the calculation (iteration) is being done
+					size_t iterations = ComplexPlane.countIterations(pixelLocation);
 					// store RGB values for current pixelLocation
 					Uint8 R, G, B;
 					// assign RGB values by reference
-					ComplexPlane.iterationsToRGB(iterationCount, R, G, B);
+					ComplexPlane.iterationsToRGB(iterations, R, G, B);
 					// set color variable in vertex_Array as screen coordinate j, i
-					vertex_Array[j + i * VideoMode::getDesktopMode().width].color = { R, G, B };
+					vertex_Array[pixel].color = { R, G, B };
 					
 
 
