@@ -1,4 +1,4 @@
-// C++ library
+// C++ libraries
 #include <sstream>
 #include <iostream>
 #include <vector>
