@@ -3,17 +3,17 @@
 #include <sstream>
 #include <iostream>
 #include <complex>
+#include <cmath>
 
 using namespace sf;
 using namespace std;
 
 #include "ComplexPlane.h"
-#include <math.h>
 
 ComplexPlane::ComplexPlane(float aspectRatio)
 {
 	m_aspectRatio = aspectRatio;
-	m_view.setSize(BASE_WIDTH, -BASE_HEIGHT * m_aspectRatio);
+	m_view.setSize(BASE_WIDTH, (-1 * (BASE_HEIGHT) * m_aspectRatio));
 	m_view.setCenter(0.0,0.0);
 	m_zoomCount = 0;
 }
@@ -32,13 +32,12 @@ void ComplexPlane::zoomIn()
 
 void ComplexPlane::zoomOut()
 {
-	m_zoomCount = m_zoomCount - 1;
+	m_zoomCount--;
 	double x = BASE_WIDTH * (pow(BASE_ZOOM, m_zoomCount));
 	double y = BASE_HEIGHT * m_aspectRatio * (pow(BASE_ZOOM, m_zoomCount));
 	//m_view.zoom(-.5f);
 	m_view.setSize(x, y);
 	
-
 	//used for debugging
 	cout << m_zoomCount << endl;
 }
@@ -58,11 +57,7 @@ void ComplexPlane::setMouseLocation(Vector2f coord)
 // Loads the information text (center, cursor, instructions) to the screen
 void ComplexPlane::loadText(Text& text)
 {
-	/*ss << "(" << (m_view.getCenter()).x << "," << (m_view.getCenter()).y << ")";
-	ss << "(" << m_mouseLocation.x << "," << m_mouseLocation.y << ")";
-	text.setString("Mandelbrot Set\nCenter: (ss.str())\nCursor: (ss.str())\nLeft-click to zoom in\nRight-click to zoom out");*/
-
-    stringstream ss;    
+	stringstream ss;    
     ss << "Mandelbrot\n" << "Center: (" << m_view.getCenter().x << ", " << m_view.getCenter().y << ")\nCursor: (" << m_mouseLocation.x << 
         ", " << m_mouseLocation.y << ")\nLeft - click to zoom in\nRight - click to zoom out";
     text.setString(ss.str());
@@ -73,64 +68,57 @@ void ComplexPlane::loadText(Text& text)
 size_t ComplexPlane::countIterations(Vector2f coord)
 {
 	size_t iterationCount = 0;
-	/*float x = coord.x;
-	float y = coord.y;
 
-	float newX = x;
-	float newY = y;
+	complex<double> c ( coord.x, coord.y );
+	complex<double> z (0, 0);
 
-	for (int i = 0; i < MAX_ITER; i++)
-	{
-		// real number component
-		float realNum = x * x - y * y;
-		// imaginary number component, i
-		float iNum = 2 * x * y;
-		// z^2 + c
-		x = realNum + newX;
-		y = iNum + newY;
-
-		iterationCount++;
- 	}
-	cout << iterationCount << endl;
-	return iterationCount;*/
-
-
-	complex<double> c = { coord.x,coord.y };
-	complex<double> z = {0,0};
-
-	while (iterationCount < 64 && abs(z) < 2.0)
+	for (iterationCount = 0; iterationCount < MAX_ITER && abs(z) < 2.0; iterationCount++)
 	{
 		z = z * z + c;
-		iterationCount++;
 	}
-	//debugging
-	cout <<"iteration Count: " << iterationCount << endl;
 	return iterationCount;
-
 }
 
-// 
+// Colors each section depending on how many iterations were done
 void ComplexPlane::iterationsToRGB(size_t count, Uint8& r, Uint8& g, Uint8& b)
 {
-	if (count >= 0 && count <= 16)
+	if (count >= 0 && count <= 2)
 	{
-		r = 0;
-		g = 255;
-		b = 0;
+		r = 30;
+		g = 30;
+		b = 30;
 	}
-	if (count > 16 && count <= 32)
+	else if (count > 2 && count <= 4)
+	{
+		r = 75;
+		g = 75;
+		b = 75;
+	}
+	else if (count > 4 && count <= 8)
+	{
+		r = 120;
+		g = 120;
+		b = 120;
+	}
+	else if (count > 8 && count <= 16)
+	{
+		r = 165;
+		g = 165;
+		b = 165;
+	}
+	else if (count > 16 && count <= 32)
+	{
+		r = 210;
+		g = 210;
+		b = 210;
+	}
+	else if (count > 32 && count < 64)
 	{
 		r = 255;
 		g = 255;
-		b = 0;
-	}
-	if (count > 32 && count < 64)
-	{
-		r = 0;
-		g = 0;
 		b = 255;
 	}
-	if (count == MAX_ITER) // max iteration
+	else if (count == MAX_ITER) // max iteration = black
 	{
 		r = 0;
 		g = 0;
