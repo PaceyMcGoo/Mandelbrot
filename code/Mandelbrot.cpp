@@ -135,6 +135,7 @@ int main()
 					Uint8 R = 0;
 					Uint8 G = 0;
 					Uint8 B = 0;
+					Uint8 H = 0;
 					// assign RGB values by reference
 					ComplexPlane.iterationsToRGB(iterations, R, G, B);
 					// set color variable in vertex_Array as screen coordinate j, i
