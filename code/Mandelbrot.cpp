@@ -1,10 +1,11 @@
 // C++ libraries
 #include <sstream>
+#include <SFML/Graphics.hpp>
 #include <iostream>
 #include <vector>
 #include <cstdlib>
 #include <complex>
-#include <SFML/Graphics.hpp>
+
 
 
 using namespace sf;
@@ -17,7 +18,7 @@ int main()
 	VideoMode vm(1920, 1080);
 
 	// Create and open a window for the game
-	RenderWindow window(vm, "Mandelbrot", Style::Fullscreen);
+	RenderWindow window(vm, "Mandelbrot", Style::Default);
 
 	//Calculates Aspect Ratio
 	float aspectRatio = (VideoMode::getDesktopMode().height * 1.0f) / (VideoMode::getDesktopMode().width * 1.0f);
@@ -27,8 +28,8 @@ int main()
 	ComplexPlane ComplexPlane(aspectRatio);
 
 	//view for hud
-	View hudView(sf::FloatRect(0, 0, 1920, 1080));
-
+	View hudView(sf::FloatRect(0.0f, 0.0f, 1920.0f, 1080.0f));
+//window.setView(ComplexPlane.getView());
 	// Text
 	Text messageText;
 	// Font
@@ -96,8 +97,7 @@ int main()
 			}
 			if (event.type == sf::Event::MouseMoved)
 			{
-				/*mousePos.x = sf::Mouse::getPosition(window).x;
-				mousePos.y = sf::Mouse::getPosition(window).y;*/
+
 				mousePos = window.mapPixelToCoords(Mouse::getPosition(), ComplexPlane.getView());
 
 				ComplexPlane.setMouseLocation(mousePos);
@@ -117,20 +117,27 @@ int main()
 		##############################
 		*/
 
+		size_t screenHeight = VideoMode::getDesktopMode().height;
+		size_t screenWidth = VideoMode::getDesktopMode().width;
+
 		if (current_State == CALCULATING)
 		{
 			//Calculation 
 			//two for-loops to check every pixel accross the screen
-			for (int j = 0; j < VideoMode::getDesktopMode().width; j++) // j is for width
+			for (unsigned int i = 0; i < screenHeight; i++) // i is for height
 			{
-				for (int i = 0; i < VideoMode::getDesktopMode().height; i++) // i is for height
+				for (unsigned int j = 0; j < screenWidth; j++) // j is for width
 				{
+
 					// assign j, i coordinate to vertex_Array position element
-					vertex_Array[j + i * VideoMode::getDesktopMode().width].position = { (float)j, (float)i };
+					vertex_Array[j + i * screenWidth].position = { (float)j, (float)i };
+
 					// mapping pixel location j, i relative to complex coordinate
 					Vector2f pixelLocation = window.mapPixelToCoords(Vector2i(j, i), ComplexPlane.getView());
+
 					// counter how many times the calculation (iteration) is being done
 					size_t iterations = ComplexPlane.countIterations(pixelLocation);
+
 					// store RGB values with current pixelLocation
 					Uint8 R = 0;
 					Uint8 G = 0;
@@ -138,12 +145,13 @@ int main()
 					// assign RGB values by reference
 					ComplexPlane.iterationsToRGB(iterations, R, G, B);
 					// set color variable in vertex_Array as screen coordinate j, i
-					vertex_Array[j + i * VideoMode::getDesktopMode().width].color = { R, G, B };
-					//cout << "Color: " << vertex_Array[pixel].position.x;
+					vertex_Array[j + i * screenWidth].color = { R, G, B };
 				}
+				//cout << i << " " << endl;
 			}
 			current_State = DISPLAYING;
 		}
+
 		ComplexPlane.loadText(messageText);
 
 		/*
@@ -154,7 +162,6 @@ int main()
 
 		// Clear everything from the last frame
 		window.clear();
-
 		window.draw(vertex_Array);
 
 		window.draw(messageText);
